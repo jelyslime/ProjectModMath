@@ -1,0 +1,324 @@
+#include <iostream>
+#include <windows.h>
+#include <locale.h>
+#include "Mod_Math.h"
+#include <unordered_set>
+
+using namespace std;
+
+int main()
+{
+	/*
+	setlocale(LC_ALL, "bulgarian");
+	SetConsoleCP(1251);				(Probvah i s trite na Windows 10 ne stava)
+	SetConsoleOutputCP(1251); 
+	*/
+
+
+	cout << "Project Mod. Math Part 1 " << endl;
+	
+	int lenghtOfRing = 0;
+
+	cout << "Enter lenght of the ring" << endl;
+	cin >> lenghtOfRing;
+
+	int *ringArr = new int[lenghtOfRing];
+
+	cout << "Exercise 1:Function inporting the ring" << endl; //Ex.1
+	ringInport(ringArr, lenghtOfRing);
+	
+	cout << endl << "Exercise 2:Collecting Values from the ring " << endl; // Ex.2
+	while(true)
+	{
+		int breaker = 2;
+		cout << endl << "If u want to continue calculating diffrent values from the ring enter 1. If not enter 0" << endl;
+		cin >> breaker;
+		if (breaker == 1)
+		{
+
+			ringPlusCalc(ringArr, lenghtOfRing);
+		}
+		else
+		{
+			cout << endl;
+			break;
+		}
+	
+	}
+
+	cout << "Exercise 3:Substracting Values from the ring " << endl; // Ex.3
+	while (true)
+	{
+		int breaker = 3;
+		cout << endl << "If u want to continue calculating diffrent values from the ring enter 1. If not enter 0" << endl;
+		cin >> breaker;
+		if (breaker == 1)
+		{
+			ringMinusCalc(ringArr, lenghtOfRing);
+		}
+		else
+		{
+			cout << endl;
+			break;
+		}
+
+	}
+
+	cout << "Exercise 4:Multiply Values from the ring " << endl; //Ex.4
+	while (true)
+	{
+		int breaker = 4;
+		cout << endl << "If u want to continue calculating diffrent values from the ring enter 1. If not enter 0" << endl;
+		cin >> breaker;
+		if (breaker == 1)
+		{
+			ringMultiplyCalc(ringArr, lenghtOfRing);
+		}
+		else
+		{
+			cout << endl;
+			break;
+		}
+
+	}
+//Part 2
+
+	cout << endl << "Part 2" << endl;
+	int xLenghtOf2dArr = lenghtCount2d(ringArr, lenghtOfRing);
+	int yLenghtOf2dArr = 2; // Ne se polzvat poveche ot 2 koloni
+	int **arrDyn = new int*[xLenghtOf2dArr];  //2D arr declaration
+
+	for (int i = 0; i < xLenghtOf2dArr; i++)
+	{
+		arrDyn[i] = new int[yLenghtOf2dArr]; 
+	}
+	ArrValueToZero(arrDyn, xLenghtOf2dArr, yLenghtOf2dArr); // All values to zero
+
+	cout << "Exercise5:Inporting values in an 2d Array which in mod sum equals 1" << endl; //Ex.5
+	arr2dFilling(ringArr, lenghtOfRing, arrDyn, xLenghtOf2dArr);
+
+	ArrPrint2d(arrDyn, xLenghtOf2dArr, yLenghtOf2dArr); // Printig the array
+
+	cout << "Exercise6: Finding all reciprocally of the values in the ring if existing " << endl;
+	 
+	
+	arrDyn = new int*[lenghtOfRing]; // Changing arr size
+	for (int i = 0; i < lenghtOfRing; i++)
+	{
+		arrDyn[i] = new int[yLenghtOf2dArr];
+	}
+	ArrValueToZero(arrDyn, lenghtOfRing, yLenghtOf2dArr); //Values to zero again
+
+	reciprocallyNumbers(ringArr, lenghtOfRing, arrDyn, lenghtOfRing, yLenghtOf2dArr); 
+	cout << endl << "Where there are zeros the number don't have reciprocally vallues" << endl;
+	ArrPrint2d(arrDyn, lenghtOfRing, yLenghtOf2dArr);
+	
+	cout << endl << "Exercise7:Finding the reciprocally number of a sertain value in the ring" << endl;
+	while (true) 
+	{
+		int breaker = 3;
+		cout << endl << "If u want to continue calculating diffrent values from the ring enter 1. If not enter 0" << endl;
+		cin >> breaker;
+		
+	
+		if (breaker == 1)
+			{
+				int valFromRing = 0;
+				cout << endl << "Enter Value From the ring." << endl << "If value is not between 0 and " << lenghtOfRing - 1 << " you must type new number between the diapazon." << endl;
+				cin >> valFromRing;
+				int checker = gcd(valFromRing, lenghtOfRing);
+
+				if (valFromRing >= lenghtOfRing)
+				{
+					continue;
+				}
+				if (checker == 1)
+				{
+					int x = 0;
+					int y = 0;
+					int valBlin = xGCD(valFromRing, lenghtOfRing, x, y);
+					cout << endl << "Reciprocally value of " << valFromRing << " is "<< valBlin << endl;
+				}
+				else {
+					cout << endl << "There is no reciprocally number!" << endl;
+				}
+			}
+		else 
+		{
+			break;
+		}
+	}
+
+	cout << endl << "Exercise8: dividing numbers from the ring" << endl; /*Tova uprajenie kakto i uprajnenieto nad nego imat nqkakuv bug chastichno rabotqt v nqkoi situacii
+	    no ponqkoga se poluchava otricatelno reciprochno chislo koeto bugva i napred zadachata opitah se da go opravq no edistveno uspqh da grumna koda nqkolko puti*/
+	while (true)
+	{
+		int breaker = 3;
+		cout << endl << "If u want to continue calculating diffrent values from the ring enter 1. If not enter 0" << endl;
+		cin >> breaker;
+
+	
+		if (breaker == 1)
+		{
+			int valFromRing1 = 0;
+			int valFromRing2 = 0; // y 
+			cout << endl << "Enter Value From the ring" << endl << "If value is not between 0 and " << lenghtOfRing - 1 << " you must type 2 new numbers between the diapazon" << endl;
+			cin >> valFromRing1 >> valFromRing2;
+			int checker = gcd(valFromRing1, lenghtOfRing);
+			int checker2 = gcd(valFromRing2, lenghtOfRing); // proverki dali imat reciprochni chisla
+
+			if (valFromRing1 >= lenghtOfRing && valFromRing2 >= lenghtOfRing) // proverki dali sa po golemi ot prustena
+			{
+				continue;
+			}
+			if (checker == 1 && checker2 == 1)
+			{
+				int x = 0;
+				int y = 0;
+				int valBlin = xGCD(valFromRing2, lenghtOfRing, x, y); // Reciprochno chislo na y (recNum)
+				ringDividing(valFromRing1, valFromRing2, lenghtOfRing, valBlin);
+
+			}
+			else
+			{
+				cout << " -1" << endl;
+			}
+
+
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	//Part 3
+
+	cout << endl << "Part 3" << endl;
+
+	cout << endl << "Exercise9:Fist way to pow a number from the ring" << endl;
+	while (true)
+	{
+		int breaker = 4;
+		cout << endl << "If you want to calculate power of a number from the ring enter 1." << endl << "If you want to continue in the program enter 0" << endl;
+		cin >> breaker;
+		if (breaker == 1)
+		{
+			int base = 0;
+			int power = 0;
+			cout << endl << "Enter number from the ring and power" << endl << "Note:If the number is beyond the ring the cicle will restart " << endl;
+			cin >> base;
+			if (base > lenghtOfRing)
+			{
+				continue;
+			}
+			cin >> power;
+			modPowFirst(lenghtOfRing, base, power);
+
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	cout << endl << "Exercise10:Second way to pow a number from the ring" << endl;
+	int SizeOfarr = 50; //How much powers of 2
+	int *PowersOfTwo = new int[SizeOfarr];
+	while (true)
+	{
+		int breaker = 4;
+		cout << endl << "If you want to calculate power of a number from the ring enter 1." << endl << "If you want to continue in the program enter 0" << endl;
+		cin >> breaker;
+		if (breaker == 1)
+		{
+			int base = 0;
+			int power = 0;
+			cout << endl << "Enter number from the ring and power" << endl << "Note:If the number is beyond the ring the cicle will restart " << endl;
+			cin >> base;
+			if (base > lenghtOfRing)
+			{
+				continue;
+			}
+			cin >> power;
+			
+			noIdeaHowToNameIt(PowersOfTwo, power, SizeOfarr); // getting the array and filling it with pows of 2's
+			int Num1 = 0;
+			int Num2 = 0;
+			int Num3 = 0;
+			int Num4 = 0;
+			checkingTheNumbers(PowersOfTwo, power, SizeOfarr, Num1, Num2, Num3, Num4);
+			resultFunction(base, power, lenghtOfRing, Num1, Num2, Num3, Num4);
+
+			
+			
+		}
+		else
+		{
+			break;
+		}
+	}
+		//Part 4
+	
+	cout << endl << "Part 4" << endl;
+	cout << endl << "Exercise 11" << endl;
+	cout << endl << "Checking if the ring is residual field" << endl;
+	reverseNumCheck(lenghtOfRing); // calling the function
+
+	cout << endl << "Part 5" << endl;
+	
+	
+	cout << endl << "Exercise 12" << endl;
+	cout << endl << "If the number haves a primitive root the console will return 1 and if it dosen't have it will return -1" << endl;
+	
+	while (true)
+	{
+		int theNumber = 0;
+		cout << endl << "Enter number to check." << endl << "If you want to stop the input type 00" << endl;
+		cin >> theNumber;
+		if (theNumber == 00)
+		{
+			break;
+		}
+
+		cout << isPrime(theNumber) << endl; // only prime numbers have primitive roots
+
+	}
+
+	cout << endl << "Exercise 13" << endl << "Finding all primitive roots in the ring" << endl;
+	cout << endl << "If the second printed number is -1 then there is no primitive root to the value to the left" << endl;
+
+	
+	
+	int blin = 2; // kodut chastichno raboti no na povecheto mesta ne dava ochakvaniqt rezultat
+	while (true)
+	{
+		
+		cout << " Smallest primitive root of " << blin << " is " << findPrimitive(blin) << endl;
+		if (blin == lenghtOfRing - 1)
+		{
+			break;
+		}
+		++blin;
+	}
+
+	cout << endl << "Exercise 14" << endl << "Calculating descrete logarithms in the ring" << endl;
+	
+	
+
+
+
+	
+	delete ringArr;
+	ringArr = NULL;
+	for (int i = 0; i < xLenghtOf2dArr; i++)
+	{
+		delete arrDyn[i];
+	}
+	delete arrDyn;
+	arrDyn = NULL;
+	delete PowersOfTwo;
+	PowersOfTwo = NULL;
+	
+	return 0;
+}
