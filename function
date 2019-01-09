@@ -1,0 +1,41 @@
+#ifndef MOD
+#define MOD
+#include <unordered_set>
+
+using namespace std; //addvam std zaradi seta
+
+
+// Part 1
+void ringInport(int *&Arr, int lenghtOfArr);
+int ringPlusCalc(int *&Arr, int lenghtOfArr);
+int ringMinusCalc(int *&Arr, int lenghtOfArr);
+int ringMultiplyCalc(int *&Arr, int lenghtOfArr);
+		// End of part 1
+//Part 2
+int lenghtCount2d(int *&modRing, int lenghtOfRing);
+int arr2dFilling(int *&modRing, int lenghtOfRing, int **&arr2d, int lenghtOfArr);
+void ArrPrint2d(int **&arr2d, int firstDimentionLenght, int secondDimentionLenght);
+void ArrValueToZero(int **&arr2d, int firstDimentionLenght, int secondDimentionLenght);
+int gcd(int a, int b);
+void reciprocallyNumbers(int *&modRing, int lenghtOfRing, int **&arr2d, int xLenghtOfArr,int yLenghtOfArr);
+int xGCD(int a, int b, int &x, int &y);
+void ringDividing(int firstNumber, int secondNumber, int lenghtOfRing,int recNum);
+int duoValueCalc(int firstNumber, int secondnumber, int lengOfRing);
+		//End of part 2
+// Part 3
+void modPowFirst(int lenghtOfRing, int base, int power);
+int powForIntNum(int base, int power);
+void noIdeaHowToNameIt(int *&array, int power, int &howMuch2s);
+void checkingTheNumbers(int *&array, int power, int &howMuch2s, int &Num1 , int &Num2,int &Num3,int &Num4);
+void resultFunction(int base, int power, int lenghtOfRing, int Num1, int Num2, int Num3, int Num4);
+	//End of Part 3
+//Part 4 
+void reverseNumCheck(int lenghtOfRing);
+		//End of Part 4
+//Part 5
+void findPrimefactors(unordered_set<int> &s, int n);// seta go izpolzvam za da pulnq v nego chislata vmesto masiv
+int isPrime(int numberToCheck);
+int power(int x, unsigned int y, int p); // to calc (x^n)%p
+ int findPrimitive(int numberTofindPrem);
+
+#endif // !MOD
