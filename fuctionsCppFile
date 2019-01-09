@@ -1,0 +1,550 @@
+#include <iostream>
+#include "Mod_Math.h"
+#include <math.h>
+#include <unordered_set>  // izpolzvam funkciqta set zashtoto ne moga s masiv
+
+using namespace std;
+
+//Functions from part 1
+
+void ringInport(int *&Arr, int lenghtOfArr) // Inporting Arr.
+{
+	for (int i = 0; i < lenghtOfArr; i++) {
+		Arr[i] = i;
+
+	}
+}
+
+int ringPlusCalc(int *&Arr, int lenghtOfArr) // Collecting 2 values (a+b)
+{
+Again:
+	int a, b;
+	cout << "Enter which values from the ring you want me to calculate" << endl << "Note:Value must be between 0 and " << lenghtOfArr - 1 << " !" << endl;
+	
+	cin >> a; 
+	cin >> b;
+
+	if (a >= lenghtOfArr || b >= lenghtOfArr)
+	{
+		cout << "Value is bigger then " << lenghtOfArr << endl << "Enter 2 new values" << endl;
+		goto Again;
+	}
+
+	int res = 0;
+
+	res = (Arr[a] + Arr[b]) % lenghtOfArr;
+
+	cout << Arr[a] << " + " << Arr[b] << " = " << res << "(mod " << lenghtOfArr << ")"<< endl;
+
+	return 1;
+}
+
+int ringMinusCalc(int *&Arr, int lenghtOfArr) //Substracting 2 values (a-b)
+{
+Again:
+	int a, b;
+	cout << "Enter which values from the ring you want me to subtract" << endl << "Note:Value must be between 0 and " << lenghtOfArr - 1 << " !" << endl;
+
+	cin >> a;
+	cin >> b;
+
+	if (a >= lenghtOfArr || b >= lenghtOfArr)
+	{
+		cout << "Value is bigger then " << lenghtOfArr << endl << "Enter 2 new values" << endl << endl;
+		goto Again;
+	}
+
+	int res = 0;
+
+	res = (Arr[a] % lenghtOfArr - Arr[b] % lenghtOfArr + lenghtOfArr) % lenghtOfArr;    
+
+	cout << Arr[a] << " - " << Arr[b] << " = " << res << "(mod " << lenghtOfArr << ")" << endl;
+
+	return 2;
+}
+
+int ringMultiplyCalc(int *&Arr, int lenghtOfArr) // Multiplying 2 values (a*b)
+{
+Again:
+	int a, b;
+	cout << "Enter which values from the ring you want me to subtract" << endl << "Note:Value must be between 0 and " << lenghtOfArr - 1 << " !" << endl;
+
+	cin >> a;
+	cin >> b;
+
+	if (a >= lenghtOfArr || b >= lenghtOfArr)
+	{
+		cout << "Value is bigger then " << lenghtOfArr << endl << "Enter 2 new values" << endl << endl;
+		goto Again;
+	}
+
+	int res = 0;
+
+	res = (Arr[a] * Arr[b]) % lenghtOfArr;
+
+	cout << Arr[a] << " * " << Arr[b] << " = " << res << "(mod " << lenghtOfArr << ")" << endl;
+
+	return 3;
+}
+		// End of part 1
+
+//Functions from part 2
+
+int lenghtCount2d(int *&modRing, int lenghtOfRing)	//Calc.Lenght of dynamic array
+{
+	cout << "Colculating the lenght of the 2d array" << endl;
+	int lencount = 0;
+
+	for (int i = 0; i < lenghtOfRing; i++)
+	{
+		for (int j = 0; j < lenghtOfRing; j++)
+		{
+			if (((modRing[i] * modRing[j]) % lenghtOfRing) == 1)
+			{
+				lencount++;
+			}
+		}
+	}
+	return lencount;
+}
+
+int arr2dFilling(int *&modRing, int lenghtOfRing, int **&arr2d, int lenghtOfArr) //Arr inporting Function
+{
+	int firstDimention = 0;
+	int secondDimention = 0;
+
+	for (int i = 0; i < lenghtOfRing; i++)
+	{
+		for (int j = 0; j < lenghtOfRing; j++)
+		{
+			if (((modRing[i] * modRing[j]) % lenghtOfRing) == 1)
+			{
+				arr2d[firstDimention][secondDimention] = modRing[i];
+				arr2d[firstDimention][secondDimention+1] = modRing[j];
+				++firstDimention;
+				
+			}
+		}
+	}
+	return 4;
+}
+
+void ArrPrint2d(int **&arr2d, int firstDimentionLenght, int secondDimentionLenght) //Array Print Function
+{
+	for (int i = 0; i < firstDimentionLenght; i++) {
+		cout << "|";
+		for (int j = 0; j < secondDimentionLenght; j++) {
+			
+				cout << "\t" << arr2d[i][j];
+			
+			
+		}
+		cout << "|\n";
+	}
+}
+
+void ArrValueToZero(int **&arr2d, int firstDimentionLenght, int secondDimentionLenght) // 0 to all values
+{
+	for (int i = 0; i < firstDimentionLenght; i++) {
+		for (int j = 0; j < secondDimentionLenght; j++) 
+		{
+			arr2d[i][j] = 0;
+		}
+	}
+}
+
+int gcd(int a, int b) //NOD 
+{
+	if (b == 0) 
+	{
+		return a;
+	}
+		
+	
+	return gcd(b, a % b);
+}
+
+int xGCD(int a, int b, int &x, int &y) //Expanded version of Nod (using it to find x (recNumb))
+{
+	if (b == 0) {
+		x = 1;
+		y = 0;
+		return a;
+	}
+
+	int x1, y1, gcd = xGCD(b, a % b, x1, y1);
+	x = y1;
+	y = x1 - (a / b) * y1;
+	return x;
+}
+
+void reciprocallyNumbers(int *&modRing, int lenghtOfRing, int **&arr2d, int xLenghtOfArr,int yLenghtOfArr) //Finding reciprocally numbers and inport
+{
+	int firstDimention = 0;
+	int secondDimention = 0;
+
+	for (int i = 0; i < lenghtOfRing; i++)
+	{
+		for (int j = 0; j < lenghtOfRing; j++)
+		{
+		
+			if (((modRing[i] * modRing[j]) % lenghtOfRing) == 1)
+			{
+				arr2d[firstDimention][secondDimention] = modRing[i];
+				arr2d[firstDimention][secondDimention + 1] = modRing[j];
+				++firstDimention;
+
+			}
+			else
+			{
+				arr2d[firstDimention][secondDimention] = i;
+				arr2d[firstDimention][secondDimention + 1] = 0;
+			}
+			
+			
+		}
+	}
+
+}
+
+int duoValueCalc(int firstNumber, int secondNumber, int lengOfRing) // 2 val multiply
+{
+	int res = 0;
+	res = (firstNumber * secondNumber) % lengOfRing;
+
+	return res;
+}
+
+void ringDividing(int firstNumber, int secondNumber, int lenghtOfRing, int recNum) // 2 val deviding
+{
+	int res = duoValueCalc(firstNumber, recNum, lenghtOfRing);
+
+	cout << firstNumber << " : " << secondNumber << " = " << res << " (mod " << lenghtOfRing << " )"<< endl;
+}
+		// End of part 2
+
+//Functions from part 3
+
+void modPowFirst(int lenghtOfRing, int base, int power) //First way to pow a mod number
+{
+	int tmpBase = base;
+	int tmpPower = power;
+	int modL = lenghtOfRing;
+	int powerinceremnt = 1;
+	int firstNumEq1 = 0; // the number + 1 = k (mod for the power)
+	
+	
+	do
+	{
+		int tempRes = 0;
+		tempRes = (tmpBase * (powForIntNum(tmpBase, powerinceremnt) % modL) ) % modL;
+		if (tempRes == 1)
+		{
+			firstNumEq1 = powerinceremnt;
+			break;
+		}
+		++powerinceremnt;
+		
+
+	} while (true);
+
+	int finalres = 0;
+	int k = firstNumEq1 + 1;
+	int powerNum = power % k;
+	finalres = (powForIntNum(base, powerNum)) % lenghtOfRing;
+
+	cout << endl << base << " on power " << power << " = " << finalres << " mod " << lenghtOfRing << endl;
+}
+
+
+int powForIntNum(int base, int power) // function for pow intigers
+{
+	int res = 1;
+
+	for (int i = 0; i < power; ++i) {
+		res *= base;
+	}
+
+	return res;
+}
+
+void noIdeaHowToNameIt(int *&array, int power, int &howMuch2s) //Making an array with all the powers of 2 of the power
+{
+	int the2baseBlin = 2;
+	howMuch2s = 0;
+	do
+	{
+		the2baseBlin *= 2;
+		++howMuch2s;
+	} while (the2baseBlin < power);
+
+	int counter = 0;
+	the2baseBlin = 2;
+	howMuch2s = 0;
+	do
+	{
+		
+		array[counter] = the2baseBlin;
+		the2baseBlin *= 2;
+		++howMuch2s;
+		++counter;
+
+	} while (the2baseBlin < power);
+
+}
+
+void checkingTheNumbers(int *&array, int power, int &howMuch2s, int &Num1, int &Num2, int &Num3, int &Num4) // exporting the numbers who equals the power
+{
+	Num1 = 0; Num2 = 0; Num3 = 0; Num4 = 0;
+	for (int i = 0; i < howMuch2s; i++)
+	{
+		for (int j = 0; j < howMuch2s; j++)
+		{
+			if ((array[i] + array[j]) == power)
+			{
+				Num1 = array[i];
+				Num2 = array[j];
+			}
+		}
+	}
+
+	for (int i = 0; i < howMuch2s; i++)
+	{
+		for (int j = 0; j < howMuch2s; j++)
+		{
+			for (int k = 0; k < howMuch2s; k++)
+			{
+				if ((array[i] + array[j] + array[k]) == power)
+				{
+					if (array[i] == 0 && array[j] == 0 && array[k] == 0)
+					{
+						continue;
+					}
+					Num1 = array[i];
+					Num2 = array[j];
+					Num3 = array[k];
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < howMuch2s; i++)
+	{
+		for (int j = 0; j < howMuch2s; j++)
+		{
+			for (int k = 0; k < howMuch2s; k++)
+			{
+				for (int f = 0; f < howMuch2s; f++)
+				{
+					if ((array[i] + array[j] + array[k] + array[j]) == power)
+					{
+						if (array[i] == 0 || array[j] == 0 || array[k] == 0 || array[f] == 0)
+						{
+							continue;
+						}
+						Num1 = array[i];
+						Num2 = array[j];
+						Num3 = array[k];
+						Num4 = array[f];
+					}
+
+				}
+			}
+		}
+	}
+
+}
+
+void resultFunction(int base, int power, int lenghtOfRing, int Num1, int Num2, int Num3, int Num4) // Final res for ex 10
+{
+	int mNum1, mNum2, mNum3, mNum4;
+	int res;
+
+	if (Num1 != 0 && Num2!= 0 && Num3 != 0 && Num4 != 0)
+	{
+		mNum1 = powForIntNum(base ,Num1) % lenghtOfRing;
+		mNum2 = powForIntNum(base, Num2) % lenghtOfRing;
+		mNum3 = powForIntNum(base, Num3) % lenghtOfRing;
+		mNum4 = powForIntNum(base, Num4) % lenghtOfRing;
+		res = (mNum1* mNum2*mNum3*mNum4) % lenghtOfRing;
+		cout << endl << base << " on power " << power << " = " << res << " mod " << lenghtOfRing << endl;
+	}
+
+	
+	if (Num1 != 0 && Num2 != 0 && Num3 != 0 && Num4 == 0)
+	{
+		mNum1 = powForIntNum(base, Num1) % lenghtOfRing;
+		mNum2 = powForIntNum(base, Num2) % lenghtOfRing;
+		mNum3 = powForIntNum(base, Num3) % lenghtOfRing;
+		res = (mNum1* mNum2*mNum3) % lenghtOfRing;
+		cout << endl << base << " on power " << power << " = " << res << " mod " << lenghtOfRing << endl;
+	}
+
+	if (Num1 != 0 && Num2 != 0 && Num3 == 0 && Num4 == 0)
+	{
+		mNum1 = powForIntNum(base, Num1) % lenghtOfRing;
+		mNum2 = powForIntNum(base, Num2) % lenghtOfRing;
+		res = (mNum1* mNum2) % lenghtOfRing;
+		cout << endl << base << " on power " << power << " = " << res << " mod " << lenghtOfRing << endl;
+	}
+}
+		// End of part 3
+
+//Functions from part 4
+
+void reverseNumCheck(int lenghtOfRing)
+{
+	 //int b = lenghOfRing
+	/*for (int i = 1; i > lenghtOfRing; i++)
+	{
+		int a = i;
+		int cheker = gcd(a, b); // if the gcd is equal to 1 then there is a reverse number
+
+		if (cheker != 1)
+		{
+			cout << endl << "The ring is not residual field" << endl;
+			break;
+		}
+		if (i == lenghtOfRing-1)
+		{
+			cout << endl << "The ring is residual field" << endl;
+		}
+	} Tova ne raboteshe kato horata
+	*/
+	int counter = 1; // tova raboti
+	int number = 1;
+	while (counter < lenghtOfRing)
+	{
+		bool flag = false;
+		if (gcd(number,lenghtOfRing) == 1)
+		{
+			flag = true;
+		}
+		else
+		{
+			flag = false;
+		}
+
+		if (flag == false)
+		{
+			cout << "The ring is not residual field" << endl;
+			break;
+		}
+		if (flag == true && counter == lenghtOfRing - 1)
+		{
+			cout << "The ring is residual field" << endl;
+			break;
+		}
+		++counter;
+		++number;
+	}
+
+}
+		// End of part 4
+
+//Functions from part 5
+
+int isPrime(int numberToCheck)
+{
+	// bazovi
+	if (numberToCheck <= 1)  return -1;
+	if (numberToCheck <= 3)  return 1;
+
+	// za otpimaciq // ako tova e false da ne se stiga do dolniq for
+	if (numberToCheck % 2 == 0 || numberToCheck % 3 == 0) return -1;
+
+	for (int i = 5; i*i <= numberToCheck; i = i + 6)
+		if (numberToCheck%i == 0 || numberToCheck % (i + 2) == 0)
+			return -1;
+
+	return 1;
+}
+
+int power(int x, unsigned int y, int p)
+{
+	int res = 1;     // Initialize result 
+
+	x = x % p; // Update x if it is more than or 
+	// equal to p 
+
+	while (y > 0)
+	{
+		// If y is odd, multiply x with result 
+		if (y & 1)
+			res = (res*x) % p;
+
+		// y must be even now 
+		y = y >> 1; // y = y/2 
+		x = (x*x) % p;
+	}
+	return res;
+}
+
+void findPrimefactors(unordered_set<int> &s, int n) // izpolzvam set zashtoto pulni bez opredela posledovatelnost
+{
+	// pulnene na kointeinera s chislata na 2ra koito razdelqt n 
+	while (n % 2 == 0)
+	{
+		s.insert(2); // pulnq seta s dvoiki
+		n = n / 2;
+	}
+
+	// n veche e nechetno. zatova propuskame edin element 
+	
+	for (int i = 3; i <= sqrt(n); i = i + 2)
+	{
+		// dokato i radelq n, zapazvam i i delq na n  
+		while (n%i == 0)
+		{
+			s.insert(i); // 
+			n = n / i;
+		}
+	}
+
+	
+	// kogato n e prosto chislo po golqmo ot dve
+	if (n > 2)
+		s.insert(n);
+}
+
+int findPrimitive(int numberTofindPrem)
+{
+	unordered_set<int> s;
+
+	// Proverka dali chisloto e prosto 
+	if (isPrime(numberTofindPrem) == false)
+		return -1;
+
+	
+	// sled kato n e prosto stoinosta na fuknciqta na Oiler e n- 1  zashtoto ima otnositelno n-1 na broi prosti chisla
+
+	int phi = numberTofindPrem - 1;
+
+	// napirane na vsichi prostichisla i zapametqvaneto im v seta 
+	findPrimefactors(s, phi);
+
+	// proverka na vsqko chislo ot 2 do phi 
+	for (int r = 2; r <= phi; r++)
+	{
+		// preminavane prez vsichki prosti predi phi
+		// i proverqvame dali shte namerim chislo s tepen 1 
+		bool flag = false; 
+		for (auto it = s.begin(); it != s.end(); it++)
+		{
+
+			// proverka dali  r^((phi)/primefactors) mod n e edno ili n e 
+			if (power(r, phi / (*it), numberTofindPrem) == 1)
+			{
+				flag = true;
+				break;
+			}
+		}
+
+		// ako nqma stepen s stoinost 1. 
+		if (flag == false)
+			return r;
+	}
+
+	// ako nqma primitiven koren
+	return -1;
+}
